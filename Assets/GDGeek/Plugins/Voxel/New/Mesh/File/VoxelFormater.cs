@@ -116,7 +116,7 @@ namespace GDGeek{
 				data.pos.x = points[i].x;
 				data.pos.y = points[i].y;
 				data.pos.z = points[i].z;
-				data.id = i;
+//				data.id = i;
 
 				if(palette == null){
 
@@ -141,7 +141,6 @@ namespace GDGeek{
 			return datas;
 		
 		}
-
 
 		public static VoxelStruct ReadFromMagicaVoxel(System.IO.BinaryReader br){
 
