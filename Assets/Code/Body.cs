@@ -31,13 +31,7 @@ public class Body : MonoBehaviour {
 		return swie;
 
 	}
-	/*private State getCameraAttack(){
-		StateWithEventMap swie = new StateWithEventMap ();
-		swie.onStart += delegate {
-			TaskManager.Run(cameraTask());
-		};
-		return swie;
-	}*/
+
 
 
 	private State getAttack(){
