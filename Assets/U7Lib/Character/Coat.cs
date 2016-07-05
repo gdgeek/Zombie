@@ -1,12 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
-namespace U7{
-	public class Coat : MonoBehaviour, IEquip {
+using GDGeek;
 
-		public virtual string brand{
+
+namespace U7{
+	public class Coat : Equip {
+		public VoxelMesh lHand{
 			get{ 
-				return "";
+				return null;
 			}
+
 		}
+
+
 	}
 }

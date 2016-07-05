@@ -7,9 +7,41 @@ using System.IO;
 public class CharacterTest {
 
 	[Test]
-	public void TestChest(){
-		
-	 
+	public void TestCoat(){
+		U7.Suit suit =  Component.FindObjectOfType<U7.Suit> ();
+		U7.Coat coat = suit.coat;
+		Assert.IsAssignableFrom<VoxelMesh> (coat.lHand);
+		Assert.NotNull (coat.lHand);
+
+		Assert.IsAssignableFrom<VoxelMesh> (coat.rHand);
+		Assert.NotNull (coat.rHand);
+
+
+		Assert.IsAssignableFrom<VoxelMesh> (coat.luArm);
+		Assert.NotNull (coat.luArm);
+		Assert.IsAssignableFrom<VoxelMesh> (coat.ruArm);
+		Assert.NotNull (coat.ruArm);
+
+
+
+		Assert.IsAssignableFrom<VoxelMesh> (coat.llArm);
+		Assert.NotNull (coat.llArm);
+		Assert.IsAssignableFrom<VoxelMesh> (coat.rlArm);
+		Assert.NotNull (coat.rlArm);
+
+
+		Assert.IsAssignableFrom<VoxelMesh> (coat.spine);
+		Assert.NotNull (coat.spine);
+
+
+		Assert.IsAssignableFrom<VoxelMesh> (coat.spine1);
+		Assert.NotNull (coat.spine1);
+
+
+		Assert.IsAssignableFrom<VoxelMesh> (coat.spine2);
+		Assert.NotNull (coat.spine2);
+
+
 	}
 	[Test] 
 	public void TestCharacter(){
@@ -27,7 +59,6 @@ public class CharacterTest {
 
 		Assert.AreEqual (suit.brand, "armour");
 
-		return;
 		U7.Pants pants = suit.pants;
 
 		Assert.AreEqual (suit.pants.brand, "armour");
@@ -39,30 +70,6 @@ public class CharacterTest {
 		body.pull (weapon);
 
 
-		/*		body.pants = suit.pants;
-		body.weapon = suit.weapon;
-		body.coat = suit.coat;
-		*/
-	
-
-	//	Head head = chracter.getHead ();
-	//	Assert.IsNotNull (head);
-
-		GameObject hobj = GameObject.Find ("Head");
-		Assert.IsNotNull (hobj);
-		chracter.setHead (hobj.GetComponent<Head>());
-		Head old = chracter.head;
-
-		Assert.IsNotNull (old.mesh);
-	//	Assert.AreEqual()
-		old.swap (hobj.GetComponent<Head>());
-
-		//chracter.head.swap (hobj.GetComponent<Head>());
-		//Assert.AreEqual (chracter.head, hobj);
-
-		//head.change (hobj);
-		//chracter.
-		//Assert.AreEqual (1, 1);
 	}
 
 }
