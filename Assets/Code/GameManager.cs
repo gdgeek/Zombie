@@ -12,17 +12,17 @@ public class GameManager : MonoBehaviour {
 
 
 	private State getOutside(){
-		StateWithEventMap swem = TaskState.Create(delegate {
+		State state = TaskState.Create(delegate {
 			Task o = _out.run();
 
 			return o; 
 		}, this.fsm_, "in");
 
 
-		return swem;
+		return state;
 	}
-	private State getInside(){
-		StateWithEventMap swem = TaskState.Create(delegate {
+	private StateBase getInside(){
+		State swem = TaskState.Create(delegate {
 			Task o = _in.run();
 			return o; 
 		}, this.fsm_, "out");

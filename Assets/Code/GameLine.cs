@@ -29,7 +29,7 @@ public class GameLine : MonoBehaviour {
 	
 	}
 	public Task inTask(){
-		TweenTask tt = new TweenTask (delegate() {
+		TaskTween tt = new TaskTween (delegate() {
 			return TweenLocalPosition.Begin(this.gameObject, 0.3f, this.transform.localPosition + new Vector3(0,0, 1f));
 		});
 

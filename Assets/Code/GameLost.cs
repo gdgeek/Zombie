@@ -15,7 +15,7 @@ public class GameLost : MonoBehaviour {
 	}
 
 	Task listTask(){
-		TweenTask tt = new TweenTask (delegate() {
+		TaskTween tt = new TaskTween (delegate() {
 			return TweenValue.Begin(this.gameObject, 1.0f, 0f,1f,this.gameObject,"light");	
 		});
 		return tt;

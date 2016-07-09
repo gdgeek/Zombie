@@ -105,7 +105,7 @@ namespace GDGeek{
 			return tl;
 		}
 		private Task show(){
-			TweenTask task = new TweenTask (
+			TaskTween task = new TaskTween (
 				delegate{
 					this.gameObject.SetActive(true);
 					TweenGroupAlpha alpha = TweenGroupAlpha.Begin(this.gameObject,0.3f, 1.0f);
@@ -118,7 +118,7 @@ namespace GDGeek{
 			return task;
 		}
 		private Task hide(){
-			TweenTask task = new TweenTask (
+			TaskTween task = new TaskTween (
 				delegate{
 				TweenGroupAlpha alpha = TweenGroupAlpha.Begin(this.gameObject,0.15f, 0.0f);
 				return alpha;

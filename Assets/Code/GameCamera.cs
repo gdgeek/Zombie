@@ -22,7 +22,7 @@ public class GameCamera : MonoBehaviour {
 
 	public Task win(){
 
-		TweenTask tt = new TweenTask (delegate {
+		TaskTween tt = new TaskTween (delegate {
 			return TweenValue.Begin(this.gameObject,1.0f, 0, 1,this.gameObject,"winrun");
 		});
 		TaskManager.PushFront (tt, delegate() {
@@ -36,7 +36,7 @@ public class GameCamera : MonoBehaviour {
 	}
 	public Task lost(){
 		
-		TweenTask tt = new TweenTask (delegate {
+		TaskTween tt = new TaskTween (delegate {
 			return TweenValue.Begin(this.gameObject,1.0f, 0, 1,this.gameObject,"lostrun");
 		});
 		TaskManager.AddUpdate (tt, delegate(float d) {

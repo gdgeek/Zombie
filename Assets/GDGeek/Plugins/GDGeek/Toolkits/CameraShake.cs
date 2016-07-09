@@ -12,7 +12,7 @@ namespace GDGeek{
 		}
 		private Task move (Tween.Method method, Vector3 to, float time)
 		{
-			TweenTask tt = new TweenTask (delegate{
+			TaskTween tt = new TaskTween (delegate{
 				Tween tween = TweenLocalPosition.Begin(this.gameObject, time, to);
 				tween.method = method;
 				return tween;

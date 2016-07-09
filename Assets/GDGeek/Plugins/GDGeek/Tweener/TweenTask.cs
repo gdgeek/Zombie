@@ -30,11 +30,11 @@ THE SOFTWARE.
 using UnityEngine;
 using System.Collections;
 namespace GDGeek{
-	public class TweenTask : Task{
+	public class TaskTween : Task{
 
 		public delegate Tween Maker();
 
-		public TweenTask(Maker maker){
+		public TaskTween(Maker maker){
 			Tween gw = null;
 			this.init =  delegate {
 				gw = maker();

@@ -34,31 +34,48 @@ using System.Collections.Generic;
 namespace GDGeek{
 	public class FSM {
 
-		private Dictionary<string, State> states_ = new Dictionary<string, State>();
-		private List<State> currState_ = new List<State>();
+		private Dictionary<string, StateBase> states_ = new Dictionary<string, StateBase>();
+		private List<StateBase> currState_ = new List<StateBase>();
 		private bool debug_ = false;
 		public FSM(bool debug = false){
 			debug_ = debug;
-			State root = new State();
+			StateBase root = new StateBase();
 			root.name = "root";
 			this.states_["root"]  = root;
 			this.currState_.Add(root);
 		}
-		public void addState(string stateName, State state){
+
+
+		public void addState(StateBase state){
+
+			this.addState (state.name, (StateBase)(state));		
+		}
+
+		public void addState(string stateName, StateBase state){
 		
 			this.addState (stateName, state, "");		
 		}
 
-		public void addState(string stateName, string defSubState, State state){
+
+		public void addState(StateBase state, string fatherName){
+			
+			this.addState (state.name, (StateBase)(state), fatherName);		
+		}
+		/*
+		public void addState(string defSubState, State state){
+			this.addState (state.stateName, (StateBase)(state), "");		
+			state.defSubState = defSubState;
+		}
+		public void addState(string stateName, string defSubState, StateBase state){
 			this.addState (stateName, state, "");		
 			state.defSubState = defSubState;
 		}
-		public void addState(string stateName, string defSubState, State state, string fatherName){
+		public void addState(string stateName, string defSubState, StateBase state, string fatherName){
 			this.addState (stateName, state, fatherName);		
 			state.defSubState = defSubState;
 		}
-
-		public void addState(string stateName, State state, string fatherName){	
+*/
+		public void addState(string stateName, StateBase state, string fatherName){	
 
 			if(fatherName == ""){
 				state.fatherName = "root";
@@ -68,7 +85,7 @@ namespace GDGeek{
 			}
 			state.getCurrState = delegate (string name){	
 				for(int i = 0; i< this.currState_.Count; ++i){
-					State s = this.currState_[i] as State;
+					StateBase s = this.currState_[i] as StateBase;
 					if(s.name == name)
 					{
 						return s;
@@ -96,7 +113,7 @@ namespace GDGeek{
 				return;
 			}
 
-			State target = this.states_[name];//target state
+			StateBase target = this.states_[name];//target state
 			while (!string.IsNullOrEmpty (target.defSubState) && this.states_.ContainsKey(target.defSubState)) {
 				target = this.states_[target.defSubState];
 			}
@@ -111,11 +128,11 @@ namespace GDGeek{
 			
 			
 			
-			State publicState = null;
+			StateBase publicState = null;
 			
-			List<State> stateList = new List<State>();
+			List<StateBase> stateList = new List<StateBase>();
 			
-			State tempState = target;
+			StateBase tempState = target;
 			string fatherName = tempState.fatherName;
 			
 			//do loop 
@@ -123,7 +140,7 @@ namespace GDGeek{
 			{
 				//reiterator current list
 				for(var i = this.currState_.Count -1; i >= 0; i--){
-					State state = this.currState_[i] as State;
+					StateBase state = this.currState_[i] as StateBase;
 					//if has public 
 					if(state == tempState){
 						publicState = state;	
@@ -141,7 +158,7 @@ namespace GDGeek{
 				//state_list.unshift(temp_state);
 				
 				if(fatherName != ""){
-					tempState = this.states_[fatherName] as State;
+					tempState = this.states_[fatherName] as StateBase;
 					fatherName = tempState.fatherName;
 				}else{
 					tempState = null;
@@ -153,12 +170,12 @@ namespace GDGeek{
 				return;
 			}
 			
-			List<State> newCurrState = new List<State>();
+			List<StateBase> newCurrState = new List<StateBase>();
 			bool under = true;
 			//-- 析构状态
 			for(int i2 = this.currState_.Count -1; i2>=0; --i2)
 			{
-				State state2 = this.currState_[i2] as State;
+				StateBase state2 = this.currState_[i2] as StateBase;
 				if(state2 == publicState)
 				{
 					under = false;
@@ -175,7 +192,7 @@ namespace GDGeek{
 			
 			//-- 构建状态
 			for(int i3 = 0; i3 < stateList.Count; ++i3){
-				State state3 = stateList[i3] as State;
+				StateBase state3 = stateList[i3] as StateBase;
 				state3.start();
 
 				newCurrState.Add(state3);
@@ -193,12 +210,12 @@ namespace GDGeek{
 
 
 		
-		public State getCurrState(string name)
+		public StateBase getCurrState(string name)
 		{
 			var self = this;
 			for(var i =0; i< self.currState_.Count; ++i)
 			{
-				State state = self.currState_[i] as  State;
+				StateBase state = self.currState_[i] as  StateBase;
 				if(state.name == name)
 				{
 					return state;
@@ -218,7 +235,7 @@ namespace GDGeek{
 		
 		public void shutdown(){
 			for(int i = this.currState_.Count-1; i>=0; --i){
-				State state =  this.currState_[i] as State;
+				StateBase state =  this.currState_[i] as StateBase;
 				state.over();
 			}
 			this.currState_ = null;  
@@ -246,7 +263,7 @@ namespace GDGeek{
 
 
 			for(int i =0; i< this.currState_.Count; ++i){
-				State state = this.currState_[i] as State;
+				StateBase state = this.currState_[i] as StateBase;
 				if (debug_) {
 					Debug.Log ("msg_post" + evt.msg+ state.name);			
 				}

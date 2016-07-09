@@ -32,7 +32,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace GDGeek{
-	public class StateWithEventMap:State {
+	
+		public class State:StateBase {
 		public delegate void Action();
 		public delegate void EvtAction(FSMEvent evt);
 		public delegate string StateAction(FSMEvent evt);
@@ -41,7 +42,11 @@ namespace GDGeek{
 	
 		public event Action onOver;
 		public event Action onStart;
-		
+		public State(string name){
+			this.name = name;
+		}
+		public State(){
+		}
 		public void addAction(string evt, string nextState){
 			addAction (evt, delegate {
 								return nextState;

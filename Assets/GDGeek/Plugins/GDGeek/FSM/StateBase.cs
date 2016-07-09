@@ -30,9 +30,9 @@ using UnityEngine;
 using System.Collections;
 
 namespace GDGeek{
-	public class State {
+	public class StateBase {
 		
-		public delegate State GetCurrState(string name);
+		public delegate StateBase GetCurrState(string name);
 		private string name_ = "";
 		protected string fatherName_ = "";
 		protected string defSubState_ = "";
@@ -65,7 +65,7 @@ namespace GDGeek{
 			}
 		}
 
-		public State(){
+		public StateBase(){
 			
 		}
 

@@ -15,27 +15,27 @@ public class Body : MonoBehaviour {
 		fsm_.post (action);
 	}
 	private State getIdle(){
-		StateWithEventMap swie = new StateWithEventMap ();
-		swie.onStart += delegate {
+		State state = new State ("idle");
+		state.onStart += delegate {
 
 			this._animator.speed = 1;
 			this._animator.Play("idle");
 		};
 
-		swie.addAction ("attack", delegate(FSMEvent evt) {
+		state.addAction ("attack", delegate(FSMEvent evt) {
 			attack_++;
 			return  "move";
 		});
-		swie.addAction ("skill", "skill");
+		state.addAction ("skill", "skill");
 
-		return swie;
+		return state;
 
 	}
 
 
 
 	private State getAttack(){
-		StateWithEventMap swie = TaskState.Create (delegate() {
+		State state = TaskState.Create (delegate() {
 			TaskList tl = new TaskList();
 			TaskWait tw = new TaskWait(0.01f);
 			TaskManager.PushFront(tw, delegate() {
@@ -68,12 +68,12 @@ public class Body : MonoBehaviour {
 				return "idle";
 			}
 		});
-		swie.addAction ("attack", delegate(FSMEvent evt) {
+		state.addAction ("attack", delegate(FSMEvent evt) {
 			attack_ ++;
 			//_animator.speed = 2+(attack_-1)*10;
 		});
 
-		return swie;
+		return state;
 
 	}
 	public Task action(string name, bool idle = true){
@@ -106,7 +106,7 @@ public class Body : MonoBehaviour {
 	
 	}
 	private State getSkill(){
-		StateWithEventMap swie = TaskState.Create (delegate() {
+		State swie = TaskState.Create (delegate() {
 			TaskList tl = new TaskList();
 			TaskWait tw = new TaskWait(0.01f);
 			TaskManager.PushFront(tw, delegate() {
@@ -140,7 +140,7 @@ public class Body : MonoBehaviour {
 
 	private int attack_ = 0;
 	public Task resetTask(){
-		TweenTask tt = new TweenTask(delegate() {
+		TaskTween tt = new TaskTween(delegate() {
 			return TweenLocalPosition.Begin(this.gameObject, 0.01f, Vector3.zero);	
 		});
 
@@ -152,14 +152,14 @@ public class Body : MonoBehaviour {
 
 	}
 	public  Task moveTask(float v, float time = 0.1f){
-		TweenTask tt = new TweenTask(delegate() {
+		TaskTween tt = new TaskTween(delegate() {
 			return TweenWorldPosition.Begin(this.gameObject, time, _fromPoint.transform.position * (1f-v) + _attackPoint.transform.position*v);	
 		});
 
 		return tt;
 	}
 	private State getMove(){
-		StateWithEventMap state = TaskState.Create (delegate {
+		State state = TaskState.Create (delegate {
 			return moveTask(1f);
 		}, this.fsm_, "attack");
 
@@ -171,16 +171,6 @@ public class Body : MonoBehaviour {
 	void Start () {
 
 
-		//fsm_.addState ("idle", getIdle ());
-		//fsm_.addState ("move", getMove());
-
-		//fsm_.addState ("camera_attack", getCameraAttack ());
-	//	fsm_.addState ("attack", getAttack ());
-	//	fsm_.addState ("skill", getSkill ());
-	//	fsm_.addState ("hit", getHit ());
-			
-	
-	//	fsm_.init ("idle");
 
 	}
 

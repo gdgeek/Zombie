@@ -19,8 +19,8 @@ public class Outside : MonoBehaviour {
 		return task;
 
 	}
-	State getSleep(){
-		var sleep = new StateWithEventMap ();//在睡眠状态
+	StateBase getSleep(){
+		var sleep = new State ();//在睡眠状态
 		sleep.addAction ("weakup", "weakup");//得到weakup消息，我就切换到weakup状态
 
 		sleep.onStart += delegate {
@@ -32,9 +32,9 @@ public class Outside : MonoBehaviour {
 
 		return sleep;
 	}
-	State getWeakup(){
+	StateBase getWeakup(){
 
-		var weakup = new StateWithEventMap ();
+		var weakup = new State ();
 		weakup.onStart += delegate {
 			isWeakup_ = true;//进入到wakup状态我就把标记设置为true
 		};
@@ -47,16 +47,16 @@ public class Outside : MonoBehaviour {
 
 	}
 
-	State getWait(){
+	StateBase getWait(){
 		var isIn = false;
-		StateWithEventMap ts = new StateWithEventMap ();
+		State ts = new State ();
 
 		ts.addAction ("space", "in");//如果输入空格，进入in
 		return ts;
 
 	}
 
-	State getIn(){
+	StateBase getIn(){
 		var instate = TaskState.Create (delegate() {
 			return _line.inTask();//向前走一格
 		}, fsm_, "sleep");

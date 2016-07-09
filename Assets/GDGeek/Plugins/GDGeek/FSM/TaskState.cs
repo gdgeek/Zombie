@@ -38,11 +38,11 @@ namespace GDGeek{
 		protected static int index_ =  0; 
 		//public delegate string NextState();
 
-		static public StateWithEventMap Create(TaskFactory creater, FSM fsm, StateWithEventMap.StateAction nextState){
+		static public State Create(TaskFactory creater, FSM fsm, State.StateAction nextState){
 			string over = "over" + index_.ToString();
 
 			index_++;
-			StateWithEventMap state = new StateWithEventMap ();
+			State state = new State ();
 			Task task = null;
 			state.onStart += delegate {
 				task = creater();
@@ -60,7 +60,7 @@ namespace GDGeek{
 			return state;
 		}
 
-		static public StateWithEventMap Create(TaskFactory creater, FSM fsm, string nextState){
+		static public State Create( TaskFactory creater, FSM fsm, string nextState){
 			return Create (creater, fsm, delegate {
 				return nextState;
 			});

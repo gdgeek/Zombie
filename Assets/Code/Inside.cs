@@ -27,8 +27,8 @@ public class Inside : MonoBehaviour {
 		return task;
 
 	}
-	State getSleep(){
-		var sleep = new StateWithEventMap ();
+	StateBase getSleep(){
+		var sleep = new State ();
 		sleep.addAction ("weakup", "input");
 		sleep.onStart += delegate {
 			_txwx.hide();
@@ -40,9 +40,9 @@ public class Inside : MonoBehaviour {
 		return sleep;
 	}
 
-	State getWeakup(){
+	StateBase getWeakup(){
 
-		var weakup = new StateWithEventMap ();
+		var weakup = new State ();
 		weakup.onStart += delegate {
 			
 			isWeakup_ = true;
@@ -61,8 +61,8 @@ public class Inside : MonoBehaviour {
 	}
 
 
-	State getFighting(){
-		StateWithEventMap swem = new StateWithEventMap ();
+	StateBase getFighting(){
+		State swem = new State ();
 
 		swem.onStart += delegate {
 			_lamp.reset();
@@ -72,8 +72,8 @@ public class Inside : MonoBehaviour {
 		return swem;
 	}
 
-	State getInput(){
-		StateWithEventMap swem = new StateWithEventMap ();
+	StateBase getInput(){
+		State swem = new State ();
 		swem.addAction ("attack", delegate {
 			if(_lamp.isGood()){
 				num_++;
@@ -90,8 +90,8 @@ public class Inside : MonoBehaviour {
 		};
 		return swem;
 	}
-	State getGood(){
-		StateWithEventMap swem = TaskState.Create (delegate {
+	StateBase getGood(){
+		State swem = TaskState.Create (delegate {
 			return _lamp.good();
 		}, fsm_, "input");
 		swem.onStart += delegate {
@@ -99,8 +99,8 @@ public class Inside : MonoBehaviour {
 		};
 		return swem;
 	}
-	State getError(){
-		StateWithEventMap swem = TaskState.Create (delegate {
+	StateBase getError(){
+		State swem = TaskState.Create (delegate {
 			return _lamp.error();
 		}, fsm_, "input");
 		swem.onStart += delegate {
@@ -108,8 +108,8 @@ public class Inside : MonoBehaviour {
 		};
 		return swem;
 	}
-	State getWin(){
-		StateWithEventMap swem = TaskState.Create (delegate {
+	StateBase getWin(){
+		State swem = TaskState.Create (delegate {
 			return this._lamp.winTask();
 		}, fsm_, "sleep");
 		swem.onStart += delegate {
@@ -117,8 +117,8 @@ public class Inside : MonoBehaviour {
 		};
 		return swem;
 	}
-	State getLost(){
-		StateWithEventMap swem = TaskState.Create (delegate {
+	StateBase getLost(){
+		State swem = TaskState.Create (delegate {
 			_lamp.over();
 			return this._lost.lostTask();
 		}, fsm_, "sleep");
