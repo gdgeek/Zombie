@@ -7,7 +7,7 @@ namespace U7{
 
 	[ExecuteInEditMode]
 	public class Character : MonoBehaviour {
-		public bool _reset = false;
+		//public bool _reset = false;
 		public Body _body = null;
 		// Use this for initialization
 		void Start () {
@@ -20,10 +20,10 @@ namespace U7{
 
 		}
 		public void refresh(){
-			head_ = this.gameObject.GetComponentInChildren<Head> ();
+			//head_ = this.gameObject.GetComponentInChildren<Head> ();
 		//	head_ = null;
 		}
-		public Head head{
+		/*public Head head{
 			get{ 
 				return head_;
 			}
@@ -32,14 +32,14 @@ namespace U7{
 		public void setHead(Head head){
 			//head_ = head;
 			//head_.
-		}
+		}*/
 
 		// Update is called once per frame
-		void Update () {
+		/*void Update () {
 			if (_reset) {
 				_reset = false;
 			}
-		}
+		}*/
 	}
 
 }

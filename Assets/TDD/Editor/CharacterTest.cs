@@ -30,9 +30,6 @@ public class CharacterTest {
 		Assert.NotNull (coat.rlArm);
 
 
-		Assert.IsAssignableFrom<VoxelMesh> (coat.spine);
-		Assert.NotNull (coat.spine);
-
 
 		Assert.IsAssignableFrom<VoxelMesh> (coat.spine1);
 		Assert.NotNull (coat.spine1);
@@ -41,18 +38,31 @@ public class CharacterTest {
 		Assert.IsAssignableFrom<VoxelMesh> (coat.spine2);
 		Assert.NotNull (coat.spine2);
 
+		U7.Character chracter = Component.FindObjectOfType<U7.Character> ();
 
+		U7.Body body = chracter.body;
+		body.upper.pull (coat);
+		//body.upper.doff ();
+	}
+	[Test]
+	public void TestDoff(){
+		U7.Character chracter = Component.FindObjectOfType<U7.Character> ();
+
+		U7.Body body = chracter.body;
+		body.upper.doff ();
+	
 	}
 	[Test] 
 	public void TestCharacter(){
 
 		U7.Character chracter = Component.FindObjectOfType<U7.Character> ();
 		Assert.IsNotNull (chracter);
-		chracter.refresh ();
+
+		//chracter.refresh ();
 		U7.Body body = chracter.body;
-		Assert.IsInstanceOf<U7.Coat> (body.coat);
-		Assert.IsInstanceOf<U7.IEquip> (body.coat);
-		Assert.AreSame (body.coat.brand, U7.Body.Naked);
+		Assert.IsInstanceOf<U7.UpperBody> (body.upper);
+		//Assert.IsInstanceOf<U7.IEquip> (body.upper);
+	//Assert.AreSame (body.upper.brand, U7.Body.Naked);
 
 
 		U7.Suit suit =  Component.FindObjectOfType<U7.Suit> ();
@@ -68,7 +78,7 @@ public class CharacterTest {
 		body.pull (coat);
 		U7.Weapon weapon = suit.weapon;
 		body.pull (weapon);
-
+		return;
 
 	}
 

@@ -80,14 +80,16 @@ namespace GDGeek
 			return meshFilter;
 		}
 
-		public static VoxelMesh _Draw(string name, MeshData data, GameObject gameObject, Material material){
+		public static VoxelMesh Draw(string name, MeshData data, GameObject gameObject, Material material){
 
 
 
 			VoxelMesh mesh = gameObject.GetComponent<VoxelMesh> ();//gameObject.AddComponent<VoxelMesh> ();
 
-			if(mesh == null){
-				mesh = gameObject.AddComponent<VoxelMesh>();
+			if (mesh == null) {
+				mesh = gameObject.AddComponent<VoxelMesh> ();
+			} else {
+				GameObject.DestroyImmediate (mesh.filter.gameObject);
 			}
 			mesh.filter = CrateMeshFilter (data, name, material);
 			mesh.filter.gameObject.transform.SetParent (gameObject.transform);	

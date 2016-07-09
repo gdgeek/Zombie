@@ -7,7 +7,6 @@ namespace GDGeek{
 
 	public class VoxelMesh : MonoBehaviour{
 		public BoxCollider collider = null;
-		//[SerializeField]
 		public VoxelStruct vs = null;
 		public MeshFilter filter = null;
 	}

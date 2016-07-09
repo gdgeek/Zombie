@@ -9,41 +9,30 @@ namespace GDGeek{
 		public TextAsset _voxFile = null;
 		public bool _building = true;
 		public VoxelStruct _vs = null;
-		public VoxelDirector _director = null;
 
-
-
-		void initDirector ()
+		public Material _material = null;
+		void init ()
 		{
-			if(_director == null){
-				this._director = this.gameObject.GetComponent<VoxelDirector>();
-			}
-			if(_director == null){
-				this._director = this.gameObject.AddComponent<VoxelDirector>();
-				
-			}
-
+			
 
 			#if UNITY_EDITOR
-			if(this._director._material == null){
-				this._director._material = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/GdGeek/Media/Voxel/Material/VoxelMesh.mat");
+			if(_material == null){
+				_material = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/GdGeek/Media/Voxel/Material/VoxelMesh.mat");
 			}
+
 			#endif
 		}
 
 		// Update is called once per frame
 		void Update () {
 			if (_building == true && _voxFile != null) {
-			
-				//initLoader();
-				initDirector();
 
+				init();
 				if (_voxFile != null) {
 					Stream sw = new MemoryStream(_voxFile.bytes);
 					System.IO.BinaryReader br = new System.IO.BinaryReader (sw); 
 					_vs = VoxelFormater.ReadFromMagicaVoxel (br);
-					//Debug.Log (_vs.datas.Count);
-					_director.build (_vs);
+					VoxelDirector.BuildIt (_vs, this.gameObject, this._material);//体素模型
 				}
 				_building = false;	
 			}

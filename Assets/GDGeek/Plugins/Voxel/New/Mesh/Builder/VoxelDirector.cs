@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace GDGeek{
-	public class VoxelDirector : MonoBehaviour {
-		public Material _material = null;
+	public class VoxelDirector/* : MonoBehaviour */{
+		//public Material _material = null;
 
 
 		public delegate void GeometryResult(VoxelMesh geometry);
 		public delegate void MeshDataResult(VoxelGeometry.MeshData data);
-		public Task buildData(VoxelStruct vs, MeshDataResult result){
+		public static Task BuildData(VoxelStruct vs, MeshDataResult result){
 			VoxelProduct product = new VoxelProduct ();
 			TaskList tl = new TaskList ();
 			VoxelData[] datas = vs.datas.ToArray ();
@@ -24,20 +24,18 @@ namespace GDGeek{
 			});
 			return tl;
 		}
-		public Task buildTask(string name, VoxelStruct vs, GeometryResult cb){
+		public static Task BuildTask(string name, VoxelStruct vs, GameObject obj, Material material, GeometryResult cb){
 
 
 			VoxelGeometry.MeshData data = null;
 			TaskPack tp = new TaskPack(delegate(){
 				vs.arrange ();
 				string md5 = VoxelFormater.GetMd5 (vs);
-				data = this.LoadFromFile (GetKey(md5));
+				data = LoadFromFile (GetKey(md5));
 				if(data == null){
-					return buildData(vs, delegate(VoxelGeometry.MeshData result) {
+					return BuildData(vs, delegate(VoxelGeometry.MeshData result) {
 						data = result;
-						//						Debug.Log(md5);
-
-						this.SaveToFile (GetKey(md5), data);
+						SaveToFile (GetKey(md5), data);
 					});
 				}
 				return new Task();
@@ -46,24 +44,24 @@ namespace GDGeek{
 
 
 			TaskManager.PushBack (tp, delegate {
-				if(this.gameObject.GetComponent<VoxelMesh>() == null){
-					this.gameObject.AddComponent<VoxelMesh>();
+				if(obj.GetComponent<VoxelMesh>() == null){
+					obj.AddComponent<VoxelMesh>();
 				}
-				VoxelMesh mesh = this.draw(name, data, this.gameObject, this._material);//VoxelGeometry.Draw ();
+				VoxelMesh mesh = Draw(name, data, obj, material);//VoxelGeometry.Draw ();
 				mesh.vs = vs;
 				cb(mesh);
 			});
 			return tp;
 		}
-		public VoxelMesh draw(string name, VoxelGeometry.MeshData data, GameObject gameObject, Material material){
+		public static VoxelMesh Draw(string name, VoxelGeometry.MeshData data, GameObject obj, Material material){
 
-			VoxelFilter vf = this.gameObject.GetComponent<VoxelFilter> ();
+			VoxelFilter vf = obj.GetComponent<VoxelFilter> ();
 			if (vf != null) {
 				Debug.Log ("i have a filter!");
-				return VoxelGeometry._Draw (name, vf.filter(data), gameObject, material);
+				return VoxelGeometry.Draw (name, vf.filter(data), obj, material);
 			} else {
 			//Debug.Log(data.count);
-				return VoxelGeometry._Draw (name, data, gameObject, material);
+				return VoxelGeometry.Draw (name, data, obj, material);
 			}
 
 		}
@@ -85,19 +83,13 @@ namespace GDGeek{
 
 
 			GK7Zip.SetToFile (key, JsonUtility.ToJson(data));
-			/*var json = JsonUtility.ToJson(data);
-			var zip = GK7Zip.Compression (json);
-			PlayerPrefs.SetString (key,zip);
-			PlayerPrefs.Save ();*/
 
 
 		}
-		public  VoxelMesh draw(string name, VoxelStruct vs, VoxelGeometry.MeshData data ,GameObject obj = null){
+		public static VoxelMesh Draw(string name, VoxelStruct vs, VoxelGeometry.MeshData data,  GameObject obj, Material material){
 
-			if (obj == null) {
-				obj = this.gameObject;
-			}
-			VoxelMesh mesh = this.draw (name, data, obj, this._material);
+
+			VoxelMesh mesh = Draw (name, data, obj, material);
 			mesh.vs = vs;
 			return mesh;
 
@@ -126,16 +118,11 @@ namespace GDGeek{
 			}
 			return data;
 		}
-		public VoxelMesh build (VoxelStruct vs, GameObject obj = null)
+		public static VoxelMesh BuildIt (VoxelStruct vs, GameObject obj, Material material)
 		{
 
-			//VoxelData[] datas = vs.datas.ToArray ();
-			if (obj == null) {
-				obj = this.gameObject;
-			}
 			VoxelGeometry.MeshData data = BuildMeshData(vs);
-			//			/Debug.Log (data.count);
-			VoxelMesh mesh =  this.draw ("Mesh", data, obj, this._material);
+			VoxelMesh mesh = Draw ("Mesh", data, obj, material);
 			mesh.vs = vs;
 			return mesh;
 
