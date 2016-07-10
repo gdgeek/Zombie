@@ -2,15 +2,19 @@
 using System.Collections;
 using GDGeek;
 
-public class WeRoleCtrl : MonoBehaviour {
+public class WeRoleCtrl : RoleCtrl {
 
-	public FSM _fsm = new FSM();
 	public Animator _animator = null;
 	public GameObject _attackPoint;
 	public GameObject _idlePoint;
-	public AttackBox	 _foot = null;
+	public AttackBox _foot = null;
+	public AttackBox _weapon = null;
 	// Use this for initialization
 	void Start () {
+
+
+
+
 		_fsm.addState("idle", getIdle());
 		_fsm.addState("attack", getAttack());
 		_fsm.addState("pre_idle", getPreIdle(), "attack");
@@ -18,10 +22,7 @@ public class WeRoleCtrl : MonoBehaviour {
 		_fsm.addState("post_attack", getPostAttack(), "attack");
 		_fsm.init ("idle");
 	}	
-	private void drawBox(){
-		Debug.DrawRay (this.gameObject.transform.position, Vector3.one);
-	
-	}
+
 	private StateBase getPreIdle(){
 		State state = TaskState.Create (delegate() {
 			return new TaskTween(delegate() {
@@ -47,7 +48,34 @@ public class WeRoleCtrl : MonoBehaviour {
 	private int atkNumber_ = 0;
 	private  StateBase getAttack(){
 		State swem = new State ();
+		swem.addAction ("foot_hurmed", delegate {
+			Debug.Log("{}{}{}}{!!!");
+				_foot.doEnable(delegate(BodyBox bb){
+					bb.hit(1.0f);
+					_foot.doDisable();
 
+				});
+
+		});
+
+		swem.addAction ("foot_unharmed", delegate {
+			_foot.doDisable();
+		});
+
+
+		swem.addAction ("weapon_hurmed", delegate {
+			Debug.Log("@!@$$%#$#$");
+			_weapon.doEnable(delegate(BodyBox bb){
+				bb.hit(1.0f);
+				_weapon.doDisable();
+
+			});
+
+		});
+
+		swem.addAction ("weapon_unhurmed", delegate {
+			_weapon.doDisable();
+		});
 		return swem;	
 	
 	}
@@ -56,7 +84,6 @@ public class WeRoleCtrl : MonoBehaviour {
 			TaskSet ts = new TaskSet();
 			TaskManager.PushFront(ts, delegate {
 				atkNumber_ ++;
-
 				_animator.SetBool("atk", true);
 			});
 
@@ -75,11 +102,7 @@ public class WeRoleCtrl : MonoBehaviour {
 			ts.push(new TaskCheck(delegate{
 				var info = _animator.GetCurrentAnimatorStateInfo(0);
 				if(atkNumber_ == 1 && info.IsName("attack")){
-					_foot.doEnable(delegate(BodyBox bb){
-						bb.hit(1.0f);
-						_foot.doDisable();
-
-					});
+					
 					return true;
 
 				}
@@ -98,6 +121,7 @@ public class WeRoleCtrl : MonoBehaviour {
 		}, _fsm, delegate {
 			return "post_attack";
 		});
+
 		return swem;
 	}
 	private StateBase getPostAttack(){
@@ -168,7 +192,6 @@ public class WeRoleCtrl : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.A)) {
 			_fsm.post ("atk");
 		}
-		drawBox ();
 	}
 
 

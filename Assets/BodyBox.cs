@@ -7,7 +7,11 @@ public class BodyBox : MonoBehaviour {
 
 	public BoxCollider _box;
 	private event OnHit onHit_;
-
+	public void Awake(){
+		if (_box == null) {
+			_box = this.gameObject.GetComponent<BoxCollider> ();
+		}
+	}
 	public void doEnable(OnHit OnHit){
 		onHit_ += OnHit;
 		_box.enabled = true;
@@ -17,10 +21,11 @@ public class BodyBox : MonoBehaviour {
 		_box.enabled = false;
 	}
 	public void hit(float power){
+		Debug.Log (this.name + power + "$$$")	;
 		if (onHit_ != null) {
 			onHit_ (power);
 		}
-	//	Debug.Log (this.name);
+
 
 	}
 }

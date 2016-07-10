@@ -2,14 +2,19 @@
 using System.Collections;
 
 public class Animator2FSM : MonoBehaviour {
-	public WeRoleCtrl _ctrl;
-	// Use this for initialization
-	void Start () {
-	
+	public RoleCtrl _ctrl;
+	public void footHurmed(){
+		_ctrl._fsm.post("foot_hurmed");
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public void footUnhurmed(){
+		_ctrl._fsm.post("foot_unhurmed");
+	}
+
+
+	public void weaponHurmed(){
+		_ctrl._fsm.post("weapon_hurmed");
+	}
+	public void weaponUnhurmed(){
+		_ctrl._fsm.post("weapon_unhurmed");
 	}
 }

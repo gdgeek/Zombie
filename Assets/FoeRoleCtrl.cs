@@ -2,18 +2,21 @@
 using System.Collections;
 using GDGeek;
 
-public class FoeRoleCtrl : MonoBehaviour {
+public class FoeRoleCtrl : RoleCtrl {
 	public Animator _animator = null;
-	private FSM fsm_ = new FSM();
 	private void doHit(float power){
 		Debug.Log (power);
-		this.fsm_.post ("hit");
-		//_animtor.SetBool ("hit", true);
+		this._fsm.post ("hit");
 	}
 	void Awake(){
-		BodyBox[] bodies = this.gameObject.GetComponentsInChildren<BodyBox> ();
-		for (int i = 0; i < bodies.Length; ++i) {
-			bodies [i].doEnable (doHit);
+		VoxelMesh[] meshs = this.gameObject.GetComponentsInChildren<VoxelMesh> ();
+		for (int i = 0; i < meshs.Length; ++i) {
+			GameObject go = meshs [i].gameObject;
+			BodyBox bb = go.GetComponent<BodyBox> ();
+			if (bb == null) {
+				bb = go.AddComponent<BodyBox> ();
+			}
+			bb.doEnable (this.doHit);
 		}
 	
 	}
@@ -39,7 +42,7 @@ public class FoeRoleCtrl : MonoBehaviour {
 			};
 
 			return task;
-		}, fsm_, delegate {
+		}, _fsm, delegate {
 			_animator.speed = 2;
 			_animator.SetBool("hit", false);
 			return "idle";
@@ -50,9 +53,9 @@ public class FoeRoleCtrl : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		fsm_.addState ("idle", getIdle ());
-		fsm_.addState ("hit", getHit ()); 
-		fsm_.init ("idle");
+		_fsm.addState ("idle", getIdle ());
+		_fsm.addState ("hit", getHit ()); 
+		_fsm.init ("idle");
 	}
 	
 	// Update is called once per frame
