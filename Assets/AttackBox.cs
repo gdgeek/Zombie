@@ -15,6 +15,7 @@ public class AttackBox : MonoBehaviour {
 		_box.enabled = false;
 	}
 	public void OnTriggerEnter( Collider other ){
+		Debug.Log ("name" + other.name);
 		BodyBox box = other.gameObject.GetComponent<BodyBox> ();
 		if (onAttack_ != null && box != null) {
 			onAttack_ (box);//.hit ();

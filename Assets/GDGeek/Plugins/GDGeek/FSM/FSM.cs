@@ -37,7 +37,7 @@ namespace GDGeek{
 		private Dictionary<string, StateBase> states_ = new Dictionary<string, StateBase>();
 		private List<StateBase> currState_ = new List<StateBase>();
 		private bool debug_ = false;
-		public FSM(bool debug = false){
+			public FSM(bool debug = false){
 			debug_ = debug;
 			StateBase root = new StateBase();
 			root.name = "root";

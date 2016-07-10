@@ -4,7 +4,7 @@ using GDGeek;
 
 public class WeRoleCtrl : MonoBehaviour {
 
-	private FSM _fsm = new FSM();
+	public FSM _fsm = new FSM();
 	public Animator _animator = null;
 	public GameObject _attackPoint;
 	public GameObject _idlePoint;
@@ -102,7 +102,7 @@ public class WeRoleCtrl : MonoBehaviour {
 	}
 	private StateBase getPostAttack(){
 		bool nextAtk = false;
-		State swem = TaskState.Create (delegate() {
+		State state = TaskState.Create (delegate() {
 			Task task = new Task();
 			task.init = delegate {
 				nextAtk = false;	
@@ -121,10 +121,8 @@ public class WeRoleCtrl : MonoBehaviour {
 				}
 				if(atkNumber_ == 2){
 					if(info.IsName("attack_first") && info.normalizedTime >= 0.9f ){
-
 						return true;
 					}
-
 				}
 
 
@@ -132,7 +130,6 @@ public class WeRoleCtrl : MonoBehaviour {
 					if(info.IsName("attack_second") && info.normalizedTime >= 0.9f ){
 						return true;
 					}
-
 				}
 				return false;
 
@@ -159,12 +156,12 @@ public class WeRoleCtrl : MonoBehaviour {
 
 	
 
-		swem.addAction ("atk", delegate {
+		state.addAction ("atk", delegate {
 			if(atkNumber_<=2){
 				nextAtk = true;
 			}
 		});
-		return swem;
+		return state;
 	}
 	// Update is called once per frame
 	void Update () {

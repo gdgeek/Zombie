@@ -170,7 +170,7 @@ ModelImporter:
     - serializedVersion: 16
       name: standing_react_large_from_left
       takeName: mixamo.com
-      firstFrame: 6.7
+      firstFrame: 0
       lastFrame: 31
       wrapMode: 0
       orientationOffsetY: 0

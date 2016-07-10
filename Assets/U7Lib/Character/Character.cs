@@ -23,23 +23,9 @@ namespace U7{
 			//head_ = this.gameObject.GetComponentInChildren<Head> ();
 		//	head_ = null;
 		}
-		/*public Head head{
-			get{ 
-				return head_;
-			}
+		public void doit(){
+			Debug.Log ("ddd it!");
 		}
-		private Head head_ = null;
-		public void setHead(Head head){
-			//head_ = head;
-			//head_.
-		}*/
-
-		// Update is called once per frame
-		/*void Update () {
-			if (_reset) {
-				_reset = false;
-			}
-		}*/
 	}
 
 }
